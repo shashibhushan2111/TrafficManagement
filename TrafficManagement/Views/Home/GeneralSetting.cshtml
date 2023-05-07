@@ -1,0 +1,50 @@
+﻿@model TrafficManagement.Models.General
+
+@{
+    ViewData["Title"] = "GeneralSetting";
+}
+
+<h1>GeneralSetting</h1>
+
+<h4>General</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="GeneralSetting">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+
+                <input asp-for="Id" class="form-control" type="hidden" />
+
+            </div>
+            <div class="form-group">
+                <label asp-for="Direction" class="control-label"></label>
+                @Html.DropDownListFor(m=>m.Direction, new List<SelectListItem>
+                {
+                new SelectListItem{ Text="Clock-Wise", Value = "Clock-Wise" },
+                new SelectListItem{ Text="Anticlock-wise", Value = "Anticlock-wise" },
+                new SelectListItem{ Text="Up-Down", Value = "Up-Down" },
+                new SelectListItem{ Text="Left-right", Value = "Left-right" },
+                })
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeIntervel" class="control-label"></label>
+                <input asp-for="TimeIntervel" class="form-control" />
+                <span asp-validation-for="TimeIntervel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

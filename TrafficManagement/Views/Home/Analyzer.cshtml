@@ -1,0 +1,142 @@
+﻿@model TrafficManagement.Models.General
+
+@{
+	ViewData["Title"] = "Analyzer";
+}
+
+<h1>Analyzer</h1>
+
+<h4>General</h4>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<form asp-action="Analyzer">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<input asp-for="TimeIntervel" class="form-control" id="Temptimer" type="hidden" />
+			</div>
+			<div class="form-group">
+				<label asp-for="Direction" class="control-label"></label>
+				<input asp-for="Direction" class="form-control" id="Direction" />
+				<span asp-validation-for="Direction" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Current Open</label>
+				<input class="form-control" id="currentOpen" />
+				<span asp-validation-for="Direction" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Next Open</label>
+				<input class="form-control" id="PreviousOpen" />
+				<span asp-validation-for="Direction" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="TimeIntervel" class="control-label"></label>
+				<input asp-for="TimeIntervel" class="form-control" id="timer" />
+				<span asp-validation-for="TimeIntervel" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Create" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
+	<div class="outer-div" id="container">
+		<button id="AA" value="A">AA</button>
+		<button id="DD" value="D">DD</button>
+		<button id="CC" value="C">CC</button>
+		<button id="BB" value="B">BB</button>
+		<div class="inner-div" id="container2">
+			<!-- Content of inner div goes here -->
+			<button id="A">A</button>
+			<button id="D">D</button>
+			<button id="C">C</button>
+			<button id="B">B</button>
+		</div>
+	</div>
+</div>
+
+<div>
+	<a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+	<script type="text/javascript">
+
+
+		$(document).ready(function() {
+			//function Main() {
+				var timerInput = $("#timer").val();
+				var temTime = $("#Temptimer").val();
+				var timer;
+				var Direction = $("#Direction").val();
+				var Direction = $("#Direction").val();
+				if (Direction == "Clock-Wise") {
+					var SignalArray = ['A', 'B', 'C', 'D'];
+				}
+				if (Direction == "Anticlock-wise") {
+					var SignalArray = ['A', 'D', 'C', 'B'];
+				}
+				if (Direction == "Up-Down") {
+					var SignalArray = ['A', 'C'];
+				}
+				if (Direction == "Left-right") {
+					var SignalArray = ['D', 'B'];
+				}
+
+				var CurrentIndex = 0;
+				var NextIndex = CurrentIndex + 1
+				var PreviousIndex = CurrentIndex - 1
+				var seconds = parseInt(timerInput);
+				var Tempseconds = parseInt(temTime);
+				if (seconds != 0) {
+					var remainingSeconds = seconds;
+				}
+
+				//var flag = false;
+				timer = setInterval(function() {
+
+					debugger
+					remainingSeconds--;
+					if (remainingSeconds == 0) {
+						CurrentIndex++;
+						NextIndex++;
+						PreviousIndex++;
+						if (CurrentIndex >= SignalArray.length) {
+							CurrentIndex = 0;
+						}
+						if (NextIndex >= SignalArray.length) {
+							NextIndex = 0;
+						}
+						if (PreviousIndex >= SignalArray.length) {
+							PreviousIndex = 0;
+						}
+						$("#PreviousOpen").val(SignalArray[NextIndex]);
+						//if (flag == false) {
+						$("#currentOpen").val(SignalArray[CurrentIndex]);
+						//}
+						$("#" + $("#currentOpen").val() + "").css("background-color", "red");
+						$("#" + SignalArray[PreviousIndex] + "").css("background-color", "green");
+						remainingSeconds = Tempseconds
+
+					}
+					if (remainingSeconds != 0) {
+						debugger
+
+						//if (flag == false) {
+						$("#currentOpen").val(SignalArray[CurrentIndex]);
+						//}
+						$("#PreviousOpen").val(SignalArray[NextIndex]);
+						$("#" + $("#currentOpen").val() + "").css("background-color", "red");
+						$("#" + SignalArray[PreviousIndex] + "").css("background-color", "green");
+						$("#timer").val(remainingSeconds);
+
+					}
+				}, 1000);
+			//}
+
+		});
+	</script>
+}
